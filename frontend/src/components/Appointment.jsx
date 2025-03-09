@@ -39,7 +39,7 @@ const Appointment = () => {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch('http://localhost:8080/api/appointments', {
+      const response = await fetch('https://rising-stars-green.vercel.app/api/appointments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
