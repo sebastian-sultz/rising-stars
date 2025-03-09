@@ -1,0 +1,15 @@
+.swiper-button-prev,
+.swiper-button-next {
+  color: #007bff; /* Matches your primary color */
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  display: none; /* Use custom icons */
+}
+
+.swiper-pagination-bullet-active {
+  background: #007bff;
+}
+
+
