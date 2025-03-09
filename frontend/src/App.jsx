@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import WOW from 'wowjs';
 import Navbar from './components/Navbar';
 import HeaderCarousel from './components/HeaderCarousel';
 import Facilities from './components/Facilities';
@@ -15,30 +14,24 @@ import Contact from './components/Contact';
 
 function App() {
   const location = useLocation();
-  const [loading, setLoading] = useState(true);
 
-  // ✅ Initialize WOW.js when component mounts
+  // Spinner logic
   useEffect(() => {
-    const wow = new WOW.WOW({
-      live: false, // Prevent initializing again when new content loads
-    });
-    wow.init();
+    const spinner = () => {
+      setTimeout(() => {
+        const spinnerElement = document.getElementById('spinner');
+        if (spinnerElement) {
+          spinnerElement.classList.remove('show');
+        }
+      }, 1);
+    };
+    spinner();
   }, []);
 
-  // ✅ Remove spinner after content loads
+  // Sticky Navbar logic
   useEffect(() => {
-    const spinnerElement = document.getElementById('spinner');
-    if (spinnerElement) {
-      spinnerElement.classList.remove('show');
-      setLoading(false);
-    }
-  }, []);
-
-  // ✅ Sticky Navbar Logic
-  useEffect(() => {
-    const stickyTop = document.querySelector('.sticky-top');
-
     const handleScroll = () => {
+      const stickyTop = document.querySelector('.sticky-top');
       if (window.scrollY > 300) {
         stickyTop.classList.add('shadow-sm');
         stickyTop.style.top = '0px';
@@ -47,34 +40,25 @@ function App() {
         stickyTop.style.top = '-100px';
       }
     };
-
-    // Run the logic once on page load
-    if (window.scrollY > 300) handleScroll();
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // ✅ Smooth scroll to top on route change
+  // Scroll to top on route change
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    window.scrollTo(0, 0);
   }, [location.pathname]);
 
   return (
     <div className="container-3xl bg-white p-0">
-      {loading && (
-        <div
-          id="spinner"
-          className="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
-        >
-          <div className="spinner-border text-primary" style={{ width: '3rem', height: '3rem' }} role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
+      <div
+        id="spinner"
+        className="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center"
+      >
+        <div className="spinner-border text-primary" style={{ width: '3rem', height: '3rem' }} role="status">
+          <span className="sr-only">Loading...</span>
         </div>
-      )}
+      </div>
       <Navbar />
       <Routes>
         <Route path="/" element={<HomeContent />} />
